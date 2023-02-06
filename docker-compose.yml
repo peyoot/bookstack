@@ -1,0 +1,46 @@
+version: "2"
+services:
+  app:
+    image: linuxserver/bookstack:21.12.5
+    container_name: bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_LANG=zh_CN
+      - WKHTMLTOPDF=/usr/bin/wkhtmltopdf
+      - ALLOW_UNTRUSTED_SERVER_FETCHING=true
+      - APP_URL=http://doc.yourdomain.com:6081
+      - MAIL_FROM=noreply@yourdomain.com
+      - MAIL_FROM_NAME=BookStack
+      - MAIL_HOST=smtp.yourdomain.com
+      - MAIL_PORT=25
+      - MAIL_USERNAME=noreply@yourdomain.com
+      - MAIL_PASSWORD=mailpassword
+      - DB_HOST=bookstack_db
+      - DB_USER=bookstack
+      - DB_PASS=Mpswbookstack
+      - DB_DATABASE=bookstackapp
+    volumes:
+      - app-config:/config
+    ports:
+      - 6081:80
+    restart: unless-stopped
+    depends_on:
+      - db
+  db:
+    image: linuxserver/mariadb
+    container_name: bookstack_db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=yourownpassword
+      - TZ=Asia/Shanghai
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=yourbookstackuserpassword
+    volumes:
+      - db-config:/config
+    restart: unless-stopped
+volumes:
+  app-config:
+  db-config:
