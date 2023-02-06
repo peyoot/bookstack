@@ -1,7 +1,8 @@
 version: "2"
 services:
   app:
-    image: linuxserver/bookstack:21.12.5
+    image: peyoot/bookstack:21.12.5
+    build: .
     container_name: bookstack
     environment:
       - PUID=1000
